@@ -1,0 +1,51 @@
+FUNCTION_BLOCK Interlock
+VAR_OUTPUT
+	First: dtInterlockCaused;
+	MaskOn:BOOL;
+END_VAR
+VAR_IN_OUT
+	Conditions: ARRAY[*] OF dtInterlockCaused;
+	Hmi: dtInterlock;
+END_VAR	
+VAR_TEMP
+	i:DINT;
+	ActiveInterlock:DINT;
+END_VAR
+
+(* 	 
+	Значение блокировки - Если условия блокировки больше не выполняются(ни что не блокирует), привод можно запустить.
+	Функция Interlock собирает булевое состояние (Conditons[i].Active).
+	Если хотябы одно из состояний True, то выходная переменная First.Active тоже True,
+а First.Cause принимает значение Condition[i].Cause.
+	Состояние First.Active можно шунтировать переменной Hmi.Mask(Маскировать).
+	Если "маска" интерлока применяется, то выходная переменная MaskOn переходит в True.
+*)
+
+ActiveInterlock := -1;
+
+IF UPPER_BOUND(Conditions,1) > 15 THEN
+		First.Active := TRUE;
+		First.Cause := "Ошибка №1 Ошибочная длина массива";
+	RETURN;
+END_IF
+
+FOR i:=LOWER_BOUND(Conditions,1) TO UPPER_BOUND(Conditions,1) DO
+	IF Conditions[i].Active THEN
+		Hmi.Input := Hmi.Input OR SHL(WORD#1,i);
+				
+		IF (SHR(Hmi.Mask, i) AND WORD#1) = 16#0 THEN
+			ActiveInterlock := i;
+		END_IF
+	ELSE
+		hmi.Input := Hmi.Input AND (NOT SHL(WORD#1, i));
+	END_IF
+END_FOR
+
+IF ActiveInterlock >= 0 THEN
+	First := Conditions[ActiveInterlock];
+ELSE
+	First.Active := FALSE;
+	First.Cause := "";
+END_IF
+
+MaskOn := Hmi.Mask <> 16#0;
