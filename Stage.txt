@@ -1,0 +1,50 @@
+{attribute 'qualified_only'}
+
+VAR_GLOBAL CONSTANT
+	
+	// Машина состояний
+	SM_WAIT:					WORD := 0;
+	SM_FAULT:					WORD := 999;
+ 	SM_DONE: 					WORD := 1000;
+		
+	// Группа
+	GROUP_NO_READY:				WORD:=	0;
+	GROUP_READY:				WORD:=	2;
+	
+	GROUP_STOPPED:				WORD :=	0;
+	GROUP_READYAUTO:			WORD :=	1;
+	GROUP_STARTING:				WORD :=	2;
+	GROUP_PROCESS:				WORD :=	3;
+	GROUP_STOPPING:				WORD :=	4;
+	GROUP_STOPPING_BY_ERROR:	WORD :=	5;
+	GROUP_STOPQUICK:			WORD :=	6;
+	GROUP_FAULT:				WORD :=	999;
+	
+	// Режим работы группы
+	MODE_DISABLE:				WORD := 0;
+	MODE_SERVICE:				WORD := 1;
+	MODE_MANUAL:				WORD := 2;
+	MODE_SEMIAUTO:				WORD := 4;
+	MODE_AUTO:					WORD := 8;
+	
+	// Место управления
+	PLACE_PU1:					WORD :=	0;
+	PLACE_PU2:					WORD :=	1;
+	PLACE_DISPATCHER:			WORD :=	2;
+	PLACE_HMI:					WORD := 3;
+	
+
+	// Units
+		// Cylindrical
+			U_CYLINDRICAL_UNDEFINED:		WORD := 0;
+			U_CYLINDRICAL_MIDDLE:			WORD := 1;
+			U_CYLINDRICAL_B_POSN:			WORD := 2;
+			U_CYLINDRICAL_MOVE_TO_A:		WORD := 3;
+			U_CYLINDRICAL_MOVE_TO_A_ON_LS:	WORD := 4;
+			U_CYLINDRICAL_A_POSN:			WORD := 5;
+			U_CYLINDRICAL_MOVE_TO_B:		WORD := 6;
+			U_CYLINDRICAL_MOVE_TO_B_ON_LS:	WORD := 7;
+			U_CYLINDRICAL_QUICK_STOP:		WORD := 900;
+END_VAR
+
+
