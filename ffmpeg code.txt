@@ -1,0 +1,1 @@
+for %i in (*.jpg) do ffmpeg -i "%i" "%~ni.png" - Команда для перевода .jpg в .png
